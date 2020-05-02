@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import styled from 'styled-components';
+import { Colors } from '../constants/Colors';
 
 const MenuItem = styled.TouchableOpacity`
     width: 40%;
@@ -30,7 +31,7 @@ const SubHeaderText = styled.Text`
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        backgroundColor: '#B4D0EA',
+        backgroundColor: /* '#B4D0EA' */ Colors.pluBlue,
     },
     top: {
         flex: 1,
