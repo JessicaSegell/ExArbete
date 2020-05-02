@@ -2,10 +2,9 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import styled from 'styled-components';
 
-
 const MenuItem = styled.TouchableOpacity`
     width: 40%;
-    height: 25%;
+    height: 30%;
     margin: 10px;
     background-color: white;
     border-radius: 5px;
@@ -38,39 +37,58 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    menuItem: {
+    menuItemsContainer: {
         flex: 2,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        //alignItems: 'center',
         justifyContent: 'center',
+    },
+    menuItemImg: {
+        width: '100%',
+        height: '100%',
+    },
+    menuTextContainer: {
+        width: '100%',
+        height: '40%',
+        backgroundColor: 'pink',
+        borderWidth: 2,
+        borderColor: 'black',
+        borderRadius: 5,
     },
 });
 
 const HomeScreen = ({ navigation }) => {
     return (
         <View style={styles.screen}>
-            {/* <Text>Home</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Competition')}>
-                <Text>Play!</Text>
-            </TouchableOpacity> */}
             <View style={styles.top}>
                 <HeaderText>PLU Polarn</HeaderText>
                 <Image source={require('../assets/CashRegister.png')} />
             </View>
-                <SubHeaderText>Välj en kategori</SubHeaderText>
-            <View style={styles.menuItem}>
-                <MenuItem>
-                    <Text>Styled</Text>
+            <SubHeaderText>Välj en kategori</SubHeaderText>
+            <View style={styles.menuItemsContainer}>
+                <MenuItem onPress={() => navigation.navigate('Competition')}>
+                    <Image style={styles.menuItemImg} source={require('../assets/fruitImg.png')} />
+                   {/*  <View style={styles.menuTextContainer}>
+                        <SubHeaderText>Frukt</SubHeaderText>
+                    </View> */}
                 </MenuItem>
                 <MenuItem>
-                    <Text>Styled</Text>
+                    <Image style={styles.menuItemImg} source={require('../assets/vegetablesImg.png')} />
+                   {/*  <View style={styles.menuTextContainer}>
+                        <SubHeaderText>Grönsaker</SubHeaderText>
+                    </View> */}
                 </MenuItem>
                 <MenuItem>
-                    <Text>Styled</Text>
+                    <Image style={styles.menuItemImg} source={require('../assets/breadImg.png')} />
+                   {/*  <View style={styles.menuTextContainer}>
+                        <SubHeaderText>Bröd</SubHeaderText>
+                    </View> */}
                 </MenuItem>
                 <MenuItem>
-                    <Text>Styled</Text>
+                    <Image style={styles.menuItemImg} source={require('../assets/ovrigt.png')} />
+                   {/*  <View style={styles.menuTextContainer}>
+                        <SubHeaderText>Övrigt</SubHeaderText>
+                    </View> */}
                 </MenuItem>
             </View>
         </View>
