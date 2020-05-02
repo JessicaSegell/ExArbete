@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
-import { Colors } from '../constants/Colors';
+import { Colors } from '../../../constants/Colors';
 import Styled from 'styled-components';
 
 const NumKey = Styled.TouchableOpacity`

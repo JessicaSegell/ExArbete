@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../Screens/HomeScreen';
-import CompetitionScreen from '../Screens/CompetitionScreen';
+import HomeScreen from '../src/Screens/Home/HomeScreen';
+import CompetitionScreen from '../src/Screens/Competition/CompetitionScreen';
 
 const Stack = createStackNavigator();
 

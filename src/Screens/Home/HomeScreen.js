@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import styled from 'styled-components';
-import { Colors } from '../constants/Colors';
+import { Colors } from '../../../constants/Colors';
 
 const MenuItem = styled.TouchableOpacity`
     width: 40%;
