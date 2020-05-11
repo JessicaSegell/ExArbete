@@ -1,10 +1,23 @@
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, Text, View } from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
+import store from './store/store';
+import { Provider } from 'react-redux';
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
+
+//window.addEventListener = x => x;
+// removes annoying pointless warning
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
+
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -25,19 +38,8 @@ export default function App() {
     )
   }
   return (
-    <AppNavigator>
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
-    </AppNavigator>
+    <Provider store={store}>
+      <AppNavigator />
+    </Provider>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+};
