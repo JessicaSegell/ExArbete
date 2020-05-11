@@ -73,8 +73,10 @@ const styles = StyleSheet.create({
     },
 });
 
-const CompetitionScreen = ({ navigation }) => {
+const CompetitionScreen = ({ navigation, route }) => {
+    const { category } = route.params;
     const [value, setValue] = useState();
+    console.log(category);
 
     const onChangeHandler = (id) => {
         const number = Object.keys(toString(id));

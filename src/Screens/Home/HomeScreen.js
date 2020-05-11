@@ -1,7 +1,10 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch} from 'react-redux';
+import { View, Text, TouchableOpacity, Image, StyleSheet, Button } from 'react-native';
 import styled from 'styled-components';
 import { Colors } from '../../../constants/Colors';
+import * as actions from '../../../store/actions/categoryActions';
+//import cashRegImg from '../../../assets/'
 
 const MenuItem = styled.TouchableOpacity`
     width: 40%;
@@ -59,38 +62,43 @@ const styles = StyleSheet.create({
 });
 
 const HomeScreen = ({ navigation }) => {
+    const [getCategories, setGetCategories] = useState(false);
+
+    //const categories = useSelector((state) => state.categories.categories);
+    //const dispatch = useDispatch();
     return (
         <View style={styles.screen}>
             <View style={styles.top}>
                 <HeaderText>PLU Polarn</HeaderText>
-                <Image source={require('../assets/CashRegister.png')} />
+                <Image source={require('../../../assets/CashRegister.png')} />
             </View>
             <SubHeaderText>Välj en kategori</SubHeaderText>
             <View style={styles.menuItemsContainer}>
                 <MenuItem onPress={() => navigation.navigate('Competition')}>
-                    <Image style={styles.menuItemImg} source={require('../assets/fruitImg.png')} />
+                    <Image style={styles.menuItemImg} source={require('../../../assets/fruitImg.png')} />
                    {/*  <View style={styles.menuTextContainer}>
                         <SubHeaderText>Frukt</SubHeaderText>
                     </View> */}
                 </MenuItem>
                 <MenuItem>
-                    <Image style={styles.menuItemImg} source={require('../assets/vegetablesImg.png')} />
+                    <Image style={styles.menuItemImg} source={require('../../../assets/vegetablesImg.png')} />
                    {/*  <View style={styles.menuTextContainer}>
                         <SubHeaderText>Grönsaker</SubHeaderText>
                     </View> */}
                 </MenuItem>
                 <MenuItem>
-                    <Image style={styles.menuItemImg} source={require('../assets/breadImg.png')} />
+                    <Image style={styles.menuItemImg} source={require('../../../assets/breadImg.png')} />
                    {/*  <View style={styles.menuTextContainer}>
                         <SubHeaderText>Bröd</SubHeaderText>
                     </View> */}
                 </MenuItem>
                 <MenuItem>
-                    <Image style={styles.menuItemImg} source={require('../assets/ovrigt.png')} />
+                    <Image style={styles.menuItemImg} source={require('../../../assets/ovrigt.png')} />
                    {/*  <View style={styles.menuTextContainer}>
                         <SubHeaderText>Övrigt</SubHeaderText>
                     </View> */}
                 </MenuItem>
+            <Button title="Debug" onPress={() => navigation.navigate('Debug')} />
             </View>
         </View>
     )
