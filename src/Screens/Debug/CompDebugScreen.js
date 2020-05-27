@@ -30,15 +30,9 @@ const CompDebugScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         if (items) {
-            //console.log('useEffect create item list')
-            //console.log(items[0])
-            // itemList = createItemList(items);
-            //itemList = singleItem(items);
-            // itemList = poppedItem(items);
             setItemArray(items);
             setItemsFetched(true);
             console.log('ITEM ARRAY: ', itemArray);
-
         }
     }, [items, itemsFetched]);
 

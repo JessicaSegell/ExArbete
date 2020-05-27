@@ -1,40 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Button } from 'react-native';
 import styled from 'styled-components';
 import { Colors } from '../../../constants/Colors';
-import * as actions from '../../../store/actions/categoryActions';
-//import cashRegImg from '../../../assets/'
+import * as actions from '../../../store/actions/index';
+import { HeaderText, SubHeaderText } from '../../Components/Styled/Text';
+import { MenuItem } from '../../Components/Styled/UI';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const MenuItem = styled.TouchableOpacity`
-    width: 40%;
-    height: 30%;
-    margin: 10px;
-    background-color: white;
-    border-radius: 5px;
-    border: 2px;
-    border-color: black;
-`;
+const HomeScreen = ({ navigation }) => {
 
-const HeaderText = styled.Text`
-    color: white;
-    font-size: 28px;
-    font-family: kalam-bold;
-    margin: 5px;
-`;
+    const loggedIn = useSelector((state) => state.auth.loggedIn);
+    const dispatch = useDispatch();
+    console.log(loggedIn);
 
-const SubHeaderText = styled.Text`
-    color: white;
-    font-size: 22px;
-    font-family: kalam-regular;
-    margin: 5px;
-    text-align: center;
-`;
+    const handleSignOut = () => {
+        dispatch(actions.signOut());
+        console.log('handle sign out ran', loggedIn);
+    };
+
+    return (
+        <View style={styles.screen}>
+            <View style={styles.top}>
+                <HeaderText>PLU Polarn</HeaderText>
+                <Image source={require('../../../assets/CashRegister.png')} />
+            </View>
+            <SubHeaderText>Vad vill du göra?</SubHeaderText>
+            <View style={styles.menuItemsContainer}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Category')}>
+                        <SubHeaderText>Spela</SubHeaderText>
+                        <Icon name="play" size={45} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.menuItem}>
+                        <SubHeaderText>Öva</SubHeaderText>
+                        <Icon name="graduation-cap" size={45} color="white" />
+                    </TouchableOpacity>
+            </View>
+            <View style={{ flexDirection: 'row', padding: 10, justifyContent: 'space-between' }}>
+                <Button title="Debug" onPress={() => navigation.navigate('Debug')} />
+                <Icon name="sign-out-alt" size={40} color="white" onPress={() => handleSignOut()} />
+            </View>
+        </View>
+    )
+};
 
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        backgroundColor: /* '#B4D0EA' */ Colors.pluBlue,
+        backgroundColor: Colors.pluBlue,
     },
     top: {
         flex: 1,
@@ -46,6 +59,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
+    },
+    menuItem: {
+        borderWidth: 2,
+        borderColor: 'white',
+        borderRadius: 5,
+        padding: 10,
+        margin: 10,
+        width: '40%',
+        alignItems: 'center',
     },
     menuItemImg: {
         width: '100%',
@@ -60,48 +82,5 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 });
-
-const HomeScreen = ({ navigation }) => {
-    const [getCategories, setGetCategories] = useState(false);
-
-    //const categories = useSelector((state) => state.categories.categories);
-    //const dispatch = useDispatch();
-    return (
-        <View style={styles.screen}>
-            <View style={styles.top}>
-                <HeaderText>PLU Polarn</HeaderText>
-                <Image source={require('../../../assets/CashRegister.png')} />
-            </View>
-            <SubHeaderText>Välj en kategori</SubHeaderText>
-            <View style={styles.menuItemsContainer}>
-                <MenuItem onPress={() => navigation.navigate('Competition')}>
-                    <Image style={styles.menuItemImg} source={require('../../../assets/fruitImg.png')} />
-                   {/*  <View style={styles.menuTextContainer}>
-                        <SubHeaderText>Frukt</SubHeaderText>
-                    </View> */}
-                </MenuItem>
-                <MenuItem>
-                    <Image style={styles.menuItemImg} source={require('../../../assets/vegetablesImg.png')} />
-                   {/*  <View style={styles.menuTextContainer}>
-                        <SubHeaderText>Grönsaker</SubHeaderText>
-                    </View> */}
-                </MenuItem>
-                <MenuItem>
-                    <Image style={styles.menuItemImg} source={require('../../../assets/breadImg.png')} />
-                   {/*  <View style={styles.menuTextContainer}>
-                        <SubHeaderText>Bröd</SubHeaderText>
-                    </View> */}
-                </MenuItem>
-                <MenuItem>
-                    <Image style={styles.menuItemImg} source={require('../../../assets/ovrigt.png')} />
-                   {/*  <View style={styles.menuTextContainer}>
-                        <SubHeaderText>Övrigt</SubHeaderText>
-                    </View> */}
-                </MenuItem>
-            <Button title="Debug" onPress={() => navigation.navigate('Debug')} />
-            </View>
-        </View>
-    )
-};
 
 export default HomeScreen;
