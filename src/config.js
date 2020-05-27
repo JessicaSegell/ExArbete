@@ -1,6 +1,8 @@
 import firebase from '@firebase/app';
 import '@firebase/firestore/';
 import '@firebase/storage/';
+import '@firebase/auth/';
+//import '@firebase/firebaseui'
 
 let firebaseConfig = {
   apiKey: "AIzaSyCNxprpzavRrc5UYYdQtrt9rXrXgyr3JoU",
@@ -19,7 +21,13 @@ export const firestore = firebase.firestore();
 export const fieldPath = firebase.firestore.FieldPath;
 export const storage = firebase.storage();
 export const storageRef = storage.ref();
+export const firebaseAuth = firebase.auth();
+export const timestamp = firebase.firestore.Timestamp;
 
+//export const firebaseui = require('firebaseui');
+// Initialize the FirebaseUI Widget using Firebase.
+//export const ui = new firebaseui.auth.AuthUI(firebase.auth());
+//export const provider = new firebase.auth.GoogleAuthProvider();
 
 export default firebase
 

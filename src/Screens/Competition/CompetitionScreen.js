@@ -1,102 +1,138 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../../store/actions/index';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
 import { Colors } from '../../../constants/Colors';
-import Styled from 'styled-components';
+import { NumKey, ZeroNumKey, EnterKey } from '../../Components/Styled/NumKey';
+import { SmallText, SubHeaderText } from '../../Components/Styled/Text';
+import GameModal from '../../Modals/GameModal';
 
-const NumKey = Styled.TouchableOpacity`
-    width: 75px;
-    height: 75px;
-    background-color: white;
-    border-radius: 10px;
-    border-width: 10px;
-    border-color: grey;
-    margin: 2px;
-`;
-
-const ZeroNumKey = Styled.TouchableOpacity`
-    width: 150px;
-    height: 75px;
-    background-color: white;
-    border-radius: 10px;
-    border-width: 10px;
-    border-color: grey;
-    margin: 2px;
-`;
-
-const EnterKey = Styled.TouchableOpacity`
-    width: 75px;
-    height: 150px;
-    background-color: white;
-    border-radius: 10px;
-    border-width: 10px;
-    border-color: grey;
-    margin: 2px;
-`;
-
-const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        backgroundColor: Colors.pluBlue,
-    },
-    top: {
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        flex: 1,
-    },
-    imgBox: {
-        width: 150,
-        height: 150,
-        backgroundColor: 'white',
-    },
-    input: {
-        width: '75%',
-        height: 50,
-        backgroundColor: 'white',
-        borderWidth: 2,
-        borderColor: 'grey',
-    },
-    numPadContainer: {
-        flexDirection: 'row',
-        //flex: 1,
-        justifyContent: 'center',
-    },
-    numPad: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        width: '70%',
-        // backgroundColor: 'blue',
-    },
-    keyNumber: {
-        fontSize: 25,
-        textAlign: 'center',
-    },
-});
+let gameBox = null;
+let score = 0;
 
 const CompetitionScreen = ({ navigation, route }) => {
     const { category } = route.params;
-    const [value, setValue] = useState();
-    console.log(category);
+    const [value, setValue] = useState('');
+    const [itemsFetched, setItemsFetched] = useState(false);
+    const [gameStarted, setGameStarted] = useState(false);
+    const [itemArray, setItemArray] = useState(null);
+    const [itemPLU, setItemPLU] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [wrongAnswers, setWrongAnswers] = useState([]);
+    const [wrong, setWrong] = useState(false);
 
-    const onChangeHandler = (id) => {
-        const number = Object.keys(toString(id));
-        console.log(number);
-        setValue(number);
+    const items = useSelector((state) => state.items.items);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!itemsFetched) {
+            let categoryKey = category.id;
+            setItemsFetched(false);
+            dispatch(actions.getCategoryItems(categoryKey));
+            console.log('dispatch action useEffect items: ')
+        };
+    }, []);
+
+    useEffect(() => {
+        if (items) {
+            setItemArray(items);
+            setItemsFetched(true);
+        }
+    }, [items, itemsFetched]);
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setItemsFetched(false);
+            setGameStarted(false);
+            setItemArray(null);
+            gameBox = null;
+            score = 0;
+        });
+        return unsubscribe;
+    }, [navigation]);
+
+    const startGame = () => {
+        console.log('game started, creating first list!');
+        gameBox = createGameBox(itemArray);
+        setGameStarted(true);
+    };
+
+    const createGameBox = (item) => {
+        if (itemArray.length >= 1) {
+            setItemPLU(item[0].plu);
+            console.log(item[0].name, item[0].plu, itemArray.length);
+            return (
+                <View key={item[0].id}>
+                    <View style={styles.imgBox}>
+                        <Image style={styles.imgBox} source={{ uri: item[0].url }} />
+                    </View>
+                    <SmallText>{item[0].name}</SmallText>
+                </View>
+            )
+        } else {
+            return (
+                <View>
+                    <Text>Done!</Text>
+                </View>
+            )
+        }
+
+    };
+
+    const toggleNextItem = () => {
+        if (itemArray.length >= 1) {
+            setItemArray(itemArray - itemArray.shift());
+            gameBox = createGameBox(itemArray);
+            console.log('second create list ran','itemArray: ' , itemArray.length)
+
+        } /* else if (itemArray.length >= 1 && wrong === true) {
+            setItemArray(itemArray.shift());
+            setWrongAnswers(...itemArray);
+            console.log('wrong answer', wrongAnswers)
+            gameBox = createGameBox(itemArray);
+            console.log('second if ran', wrong);
+        } */ else {
+            console.log('no more items!', itemArray.length)
+            setModalVisible(true);
+        }
+    };
+
+    const onChangeHandler = (text) => {
+        setValue(text);
     }
 
     const onSubmitHandler = () => {
-        const guess = value;
-        console.log(guess);
-        setValue('');
+        if (value == itemPLU) {
+            score += 1;
+            console.log('correct! ', score, itemArray.length);
+            setValue('');
+            toggleNextItem();
+        } else {
+           // setWrong(true);
+            console.log('not correct ', score, itemArray.length);
+            toggleNextItem();
+            setValue('');
+        }
     }
 
 
     return (
         <View style={styles.screen}>
+            <GameModal visible={modalVisible} navigation={navigation} score={score} />
             <View style={styles.top}>
-                <View style={styles.imgBox}>
-                </View>
-                <TextInput style={styles.input} value={value} />
+                {gameStarted
+                    ? gameBox
+                    : (
+                        <TouchableOpacity style={styles.startBtn} onPress={startGame}>
+                            <SubHeaderText>Starta spel!</SubHeaderText>
+                        </TouchableOpacity>
+                    )
+                }
+                <TextInput
+                    style={styles.input}
+                    value={value}
+                    onChangeText={text => onChangeHandler(text)}
+                />
             </View>
             <View style={styles.numPadContainer}>
                 <View style={styles.numPad}>
@@ -136,12 +172,55 @@ const CompetitionScreen = ({ navigation, route }) => {
                 </View>
                 <View style={{ width: '20%', justifyContent: 'flex-end' }}>
                     <EnterKey onPress={onSubmitHandler}>
-                    <Text style={{textAlign: 'center'}}>Enter</Text>
+                        <Text style={{ textAlign: 'center' }}>Enter</Text>
                     </EnterKey>
                 </View>
             </View>
         </View>
     )
 };
+
+const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        backgroundColor: Colors.pluBlue,
+    },
+    top: {
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        flex: 1,
+    },
+    startBtn: {
+        borderWidth: 2,
+        borderRadius: 5,
+        borderColor: 'white',
+    },
+    imgBox: {
+        width: 125,
+        height: 125,
+        backgroundColor: 'white',
+    },
+    input: {
+        width: '75%',
+        height: 50,
+        backgroundColor: 'white',
+        borderWidth: 2,
+        borderColor: 'grey',
+    },
+    numPadContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    numPad: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        width: '70%',
+    },
+    keyNumber: {
+        fontSize: 25,
+        textAlign: 'center',
+    },
+});
 
 export default CompetitionScreen;
