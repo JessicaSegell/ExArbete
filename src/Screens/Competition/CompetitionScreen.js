@@ -9,16 +9,20 @@ import GameModal from '../../Modals/GameModal';
 
 let gameBox = null;
 let score = 0;
+let wrongAnswers = [];
+let correctAnswers = [];
+let newData;
+
 
 const CompetitionScreen = ({ navigation, route }) => {
     const { category } = route.params;
     const [value, setValue] = useState('');
     const [itemsFetched, setItemsFetched] = useState(false);
     const [gameStarted, setGameStarted] = useState(false);
-    const [itemArray, setItemArray] = useState(null);
+    const [itemArray, setItemArray] = useState([]);
     const [itemPLU, setItemPLU] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
-    const [wrongAnswers, setWrongAnswers] = useState([]);
+    //const [wrongAnswers, setWrongAnswers] = useState([]);
     const [wrong, setWrong] = useState(false);
 
     const items = useSelector((state) => state.items.items);
@@ -47,6 +51,7 @@ const CompetitionScreen = ({ navigation, route }) => {
             setItemArray(null);
             gameBox = null;
             score = 0;
+            wrongAnswers = [];
         });
         return unsubscribe;
     }, [navigation]);
@@ -80,20 +85,11 @@ const CompetitionScreen = ({ navigation, route }) => {
     };
 
     const toggleNextItem = () => {
-        if (itemArray.length >= 1) {
-            setItemArray(itemArray - itemArray.shift());
+        if (itemArray.length >=1 ) {
             gameBox = createGameBox(itemArray);
-            console.log('second create list ran','itemArray: ' , itemArray.length)
-
-        } /* else if (itemArray.length >= 1 && wrong === true) {
-            setItemArray(itemArray.shift());
-            setWrongAnswers(...itemArray);
-            console.log('wrong answer', wrongAnswers)
-            gameBox = createGameBox(itemArray);
-            console.log('second if ran', wrong);
-        } */ else {
-            console.log('no more items!', itemArray.length)
+        } else {
             setModalVisible(true);
+            createListSuggestion();
         }
     };
 
@@ -101,19 +97,39 @@ const CompetitionScreen = ({ navigation, route }) => {
         setValue(text);
     }
 
+    const createListSuggestion = (item) => {
+        let listSuggestion = wrongAnswers.map(item => {
+            return item.name;
+        });
+        console.log('listSugg:', listSuggestion);
+    }
+
     const onSubmitHandler = () => {
+
         if (value == itemPLU) {
             score += 1;
+            let y = itemArray.shift();
+            setItemArray(itemArray);
+            correctAnswers = [correctAnswers, {...y}]
             console.log('correct! ', score, itemArray.length);
+            console.log('rätt:', correctAnswers);
             setValue('');
             toggleNextItem();
         } else {
-           // setWrong(true);
+            let x = {};
+            x = itemArray.shift();
+           // let wrong = [...x];
+           console.log('x:', x);
+            setItemArray(itemArray);
+            newData.push(x);
+            console.log('newData:', newData, newData.length)
+            //console.log('fel:', wrongAnswers, wrongAnswers.length);
             console.log('not correct ', score, itemArray.length);
-            toggleNextItem();
             setValue('');
-        }
-    }
+            toggleNextItem();
+
+        };
+    };
 
 
     return (
