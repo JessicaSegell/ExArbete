@@ -21,5 +21,13 @@ export const SmallText = styled.Text`
     font-size: 22px;
     font-family: kalam-regular;
     margin: 5px;
-    text-align: center;
+    text-align: ${(props) => props.textAlign || 'center'};
+`;
+
+export const AltItemText = styled.Text`
+    color: ${(props) => props.color || 'green'};
+    font-size: 22px;
+    font-family: source-sans-regular;
+    margin: 5px;
+    text-align: ${(props) => props.textAlign || 'left'};
 `;

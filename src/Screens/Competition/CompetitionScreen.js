@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../../store/actions/index';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 import { NumKey, ZeroNumKey, EnterKey } from '../../Components/Styled/NumKey';
-import { SmallText, SubHeaderText } from '../../Components/Styled/Text';
+import { SmallText, SubHeaderText, AltItemText } from '../../Components/Styled/Text';
 import GameModal from '../../Modals/GameModal';
 
 let gameBox = null;
 let score = 0;
 let wrongAnswers = [];
 let correctAnswers = [];
-let newData;
+let newData = [];
+let listSuggestion = null;
 
 
 const CompetitionScreen = ({ navigation, route }) => {
@@ -23,7 +24,9 @@ const CompetitionScreen = ({ navigation, route }) => {
     const [itemPLU, setItemPLU] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     //const [wrongAnswers, setWrongAnswers] = useState([]);
-    const [wrong, setWrong] = useState(false);
+    const [wrong, setWrong] = useState(null);
+    const [listCreated, setListCreated] = useState(false);
+    const wrongA = useRef(null);
 
     const items = useSelector((state) => state.items.items);
     const dispatch = useDispatch();
@@ -52,6 +55,9 @@ const CompetitionScreen = ({ navigation, route }) => {
             gameBox = null;
             score = 0;
             wrongAnswers = [];
+            newData = [];
+            wrongA.current = null;
+            listSuggestion = null;
         });
         return unsubscribe;
     }, [navigation]);
@@ -85,7 +91,7 @@ const CompetitionScreen = ({ navigation, route }) => {
     };
 
     const toggleNextItem = () => {
-        if (itemArray.length >=1 ) {
+        if (itemArray.length >= 1) {
             gameBox = createGameBox(itemArray);
         } else {
             setModalVisible(true);
@@ -98,43 +104,59 @@ const CompetitionScreen = ({ navigation, route }) => {
     }
 
     const createListSuggestion = (item) => {
-        let listSuggestion = wrongAnswers.map(item => {
-            return item.name;
-        });
-        console.log('listSugg:', listSuggestion);
-    }
+        if (newData.length != 0) {
+            listSuggestion = newData.map(item => {
+                return (
+                    <View key={item.id} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <AltItemText>{item.name}</AltItemText>
+                        <AltItemText>{item.plu}</AltItemText>
+                    </View>
+                )
+            });
+        } else {
+            return;
+        }
+    };
+
+    const saveList = () => {
+        console.log('list was saved!');
+    };
 
     const onSubmitHandler = () => {
 
         if (value == itemPLU) {
             score += 1;
-            let y = itemArray.shift();
+            let y = {};
+            y = itemArray.shift();
             setItemArray(itemArray);
-            correctAnswers = [correctAnswers, {...y}]
+            // correctAnswers = [correctAnswers, { ...y }]
             console.log('correct! ', score, itemArray.length);
-            console.log('rätt:', correctAnswers);
+            // console.log('rätt:', correctAnswers);
             setValue('');
             toggleNextItem();
         } else {
             let x = {};
             x = itemArray.shift();
-           // let wrong = [...x];
-           console.log('x:', x);
             setItemArray(itemArray);
-            newData.push(x);
-            console.log('newData:', newData, newData.length)
-            //console.log('fel:', wrongAnswers, wrongAnswers.length);
+            wrongA.current = x;
+            newData.push(wrongA.current);
+            setWrong(newData);
             console.log('not correct ', score, itemArray.length);
             setValue('');
             toggleNextItem();
-
         };
     };
 
 
     return (
         <View style={styles.screen}>
-            <GameModal visible={modalVisible} navigation={navigation} score={score} />
+            <GameModal
+                visible={modalVisible}
+                navigation={navigation}
+                score={score}
+                listSuggestion={listSuggestion}
+                save={saveList}
+            />
             <View style={styles.top}>
                 {gameStarted
                     ? gameBox
@@ -152,14 +174,14 @@ const CompetitionScreen = ({ navigation, route }) => {
             </View>
             <View style={styles.numPadContainer}>
                 <View style={styles.numPad}>
-                    <NumKey onPress={() => setValue(value + '1')}>
-                        <Text style={styles.keyNumber}>1</Text>
+                    <NumKey onPress={() => setValue(value + '7')}>
+                        <Text style={styles.keyNumber}>7</Text>
                     </NumKey>
-                    <NumKey onPress={() => setValue(value + '2')}>
-                        <Text style={styles.keyNumber}>2</Text>
+                    <NumKey onPress={() => setValue(value + '8')}>
+                        <Text style={styles.keyNumber}>8</Text>
                     </NumKey>
-                    <NumKey onPress={() => setValue(value + '3')}>
-                        <Text style={styles.keyNumber}>3</Text>
+                    <NumKey onPress={() => setValue(value + '9')}>
+                        <Text style={styles.keyNumber}>9</Text>
                     </NumKey>
                     <NumKey onPress={() => setValue(value + '4')}>
                         <Text style={styles.keyNumber}>4</Text>
@@ -170,14 +192,14 @@ const CompetitionScreen = ({ navigation, route }) => {
                     <NumKey onPress={() => setValue(value + '6')}>
                         <Text style={styles.keyNumber}>6</Text>
                     </NumKey>
-                    <NumKey onPress={() => setValue(value + '7')}>
-                        <Text style={styles.keyNumber}>7</Text>
+                    <NumKey onPress={() => setValue(value + '1')}>
+                        <Text style={styles.keyNumber}>1</Text>
                     </NumKey>
-                    <NumKey onPress={() => setValue(value + '8')}>
-                        <Text style={styles.keyNumber}>8</Text>
+                    <NumKey onPress={() => setValue(value + '2')}>
+                        <Text style={styles.keyNumber}>2</Text>
                     </NumKey>
-                    <NumKey onPress={() => setValue(value + '9')}>
-                        <Text style={styles.keyNumber}>9</Text>
+                    <NumKey onPress={() => setValue(value + '3')}>
+                        <Text style={styles.keyNumber}>3</Text>
                     </NumKey>
                     <ZeroNumKey onPress={() => setValue(value + '0')}>
                         <Text style={styles.keyNumber}>0</Text>

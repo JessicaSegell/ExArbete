@@ -23,6 +23,7 @@ const fetchFonts = () => {
   return Font.loadAsync({
     'kalam-bold': require('./assets/fonts/Kalam-Bold.ttf'),
     'kalam-regular': require('./assets/fonts/Kalam-Regular.ttf'),
+    'source-sans-regular': require('./assets/fonts/SourceSansPro-Regular.ttf'),
   });
 };
 
