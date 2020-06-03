@@ -36,7 +36,7 @@ const getCategoryItemsSuccess = (state, action) => {
             categoryKey: item.data().categoryKey,
         });
     });
-    console.log('reducer done: ', itms);
+    console.log('reducer done');
     return {
         ...state,
         loading: false,
