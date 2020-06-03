@@ -8,6 +8,7 @@ import { Colors } from '../../../constants/Colors';
 import { SmallButton } from '../../Components/Styled/UI';
 import { SmallText } from '../../Components/Styled/Text';
 import LoadingModal from '../../Modals/LoadingModal';
+import ConfirmModal from '../../Modals/ConfirmModal';
 
 const DebugScreen = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -46,13 +47,15 @@ const DebugScreen = ({ navigation }) => {
             <View style={styles.top}>
                 <Text>Hello Debug!</Text>
             </View>
-            <GameModal visible={modalVisible} navigation={navigation} />
+            {/* <GameModal visible={modalVisible} navigation={navigation} /> */}
+            <ConfirmModal visible={modalVisible} navigation={navigation} />
             {/* <LoadingModal visible={loadingVisible} navigation={navigation} /> */}
             <View style={styles.buttons}>
+                <Button title="Show Confirm modal" onPress={() => setModalVisible(true)} />
                 <Button title="My Page" onPress={() => navigation.navigate('MyPage')} />
                 <Button title="Results" onPress={() => navigation.navigate('Results')} />
                 <Button title="Loadingmodal" onPress={() => setLoadingVisible(true)} />
-                <Button title="Show modal" onPress={() => setModalVisible(true)} />
+               {/*  <Button title="Show modal" onPress={() => setModalVisible(true)} /> */}
                 <Button title="SignIn" onPress={() => navigation.navigate('SignIn')} />
                 <Button title="Create account" onPress={() => navigation.navigate('CreateAccount')} />
                 <Button title="Auth start" onPress={() => navigation.navigate('AuthStart')} />

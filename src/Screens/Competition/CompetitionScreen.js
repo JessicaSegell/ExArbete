@@ -29,6 +29,7 @@ const CompetitionScreen = ({ navigation, route }) => {
     const wrongA = useRef(null);
 
     const items = useSelector((state) => state.items.items);
+   // const user = useSelector((state) => state.user.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -120,6 +121,7 @@ const CompetitionScreen = ({ navigation, route }) => {
 
     const saveList = () => {
         console.log('list was saved!');
+        dispatch(actions.createList(newData));
     };
 
     const onSubmitHandler = () => {
