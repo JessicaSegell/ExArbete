@@ -19,5 +19,4 @@ export const createResult = (result) => (dispatch) => {
     firestore.collection('results').doc(id).update({
 
     })
-
 };

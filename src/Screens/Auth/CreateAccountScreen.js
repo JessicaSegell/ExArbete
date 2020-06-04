@@ -12,7 +12,6 @@ const CreateAccountScreen = () => {
     const [userName, setUserName] = useState('');
     const [newUser, setNewUser] = useState({ email: '', password: '', userName: '' });
 
-
     const loggedIn = useSelector((state) => state.auth.loggedIn);
     const error = useSelector((state) => state.auth.error);
     const dispatch = useDispatch();
@@ -91,6 +90,6 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 20,
     },
-})
+});
 
 export default CreateAccountScreen;

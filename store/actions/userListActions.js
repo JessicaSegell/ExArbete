@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import { firebase, firebaseAuth, firestore, fieldPath, fieldValue } from '../../src/config';
+import { firebaseAuth, firestore, fieldValue } from '../../src/config';
 
 const connectListStart = () => ({
     type: actionTypes.CONNECT_LIST_START,
@@ -28,36 +28,26 @@ const getListError = (error) => ({
     error: error.message,
 });
 
-/* let listKey;
-const getListKey = () => {
-    let user = firebaseAuth.currentUser;
-    firestore.collection('user_accounts').doc(user.uid).get()
-        .then((doc) => {
-            listKey = doc.data().myListKey
-            console.log("Document data:", doc.data().myListKey, 'listKey:', listKey);
-        })
-    return listKey;
-}; */
-
-export const createList = (list) => (dispatch) => {
-    //getListKey();
+export const createList = (list, id) => (dispatch) => {
     let listKey;
-    let user = firebaseAuth.currentUser;
-    firestore.collection('user_accounts').doc(user.uid).get()
+    //let user = firebaseAuth.currentUser;
+    firestore.collection('user_accounts').doc(id).get()
         .then((doc) => {
             listKey = doc.data().myListKey
-            console.log("Document data:", doc.data().myListKey, 'listKey:', listKey);
+            //console.log("Document data:", doc.data().myListKey, 'listKey:', listKey);
         })
         .then(() => {
-            console.log('listkey stick:', listKey)
             dispatch(connectListStart());
             const docRef = firestore.collection('user_items_list').doc(listKey);
+            docRef.set({
+                'myList': fieldValue.arrayUnion({ list })
+            }, { merge: true })
             docRef.update({
                 'myList': fieldValue.arrayUnion({ list }),
             })
         })
         .then(() => {
-            dispatch(createListSuccess()) //skicka in result?
+            dispatch(createListSuccess())
             console.log('create list success!')
         })
         .catch(error => {
@@ -96,15 +86,5 @@ export const getList = () => ((dispatch) => {
                     dispatch(getListError(err));
                     console.log('Something went wrong', err);
                 });
-        })
-
-
-
+        });
 });
-
-/* { merge: true }
-.where(fieldPath.documentId(), '==', listKey) */
-
-/* .catch(err => {
-                    console.log('Something went wrong:', err)
-                }) */

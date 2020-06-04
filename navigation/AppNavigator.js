@@ -13,6 +13,7 @@ import * as actions from '../store/actions/index';
 import { useSelector } from 'react-redux';
 import ResultsScreen from '../src/Screens/Results/ResultsScreen';
 import MyPageScreen from '../src/Screens/MyPage/MyPageScreen';
+import ComingSoonScreen from '../src/Screens/ComingSoon/ComingSoonScreen';
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -47,6 +48,10 @@ const Home = (
             name="MyPage"
             component={MyPageScreen}
         />
+        <Stack.Screen
+            name="ComingSoon"
+            component={ComingSoonScreen}
+        />
     </Stack.Navigator>
 )
 
@@ -70,7 +75,6 @@ const Auth = (
 function AppNavigator() {
 
     const auth = useSelector((state) => state.auth.loggedIn);
-
 
     return (
 

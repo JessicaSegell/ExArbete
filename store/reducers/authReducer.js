@@ -9,7 +9,7 @@ const initState = {
 const connectAuthStart = (state) => ({
     ...state,
     loading: true,
-})
+});
 
 const loginSuccess = (state) => ({
     ...state,
@@ -22,7 +22,7 @@ const loginError = (state, error) => ({
     ...state,
     loading: false,
     error: error,
-})
+});
 
 const logoutSuccess = () => ({
     loggedIn: false,
@@ -63,70 +63,3 @@ const authReducer = (state = initState, action) => {
 };
 
 export default authReducer;
-
-//REFERENS
-
-/* const initialState = {
-    token: null,
-    userId: null,
-    email: null,
-    didTryAutoLogin: false,
-    error: null,
-    loading: false,
-};
-
-const connectAuthStart = (state) => ({
-    ...state,
-    loading: true,
-});
-
-const authenticate = (state, action) => ({
-    token: action.token,
-    userId: action.userId,
-    email: action.email,
-    didTryAutoLogin: true,
-    error: null,
-    loading: false,
-});
-
-const setDidTryAl = (state) => ({
-    ...state,
-    didTryAutoLogin: true,
-});
-
-const logout = () => ({
-    ...initialState,
-    didTryAutoLogin: true,
-});
-
-const firebaseAuthError = (state, action) => ({
-    ...state,
-    error: action.error,
-    loading: false,
-});
-
-const cleanUpAuthError = (state) => ({
-    ...state,
-    error: null,
-});
-
-const authReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case actionTypes.CONNECT_AUTH_START:
-            return connectAuthStart(state, action);
-        case actionTypes.AUTHENTICATE:
-            return authenticate(state, action);
-        case actionTypes.SET_DID_TRY_AL:
-            return setDidTryAl(state, action);
-        case actionTypes.LOGOUT:
-            return logout(state, action);
-        case actionTypes.FIREBASE_AUTH_ERROR:
-            return firebaseAuthError(state, action);
-        case actionTypes.CLEAN_UP_AUTH_ERROR:
-            return cleanUpAuthError(state, action);
-        default:
-            return state;
-    }
-};
-
-export default authReducer; */

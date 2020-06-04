@@ -27,7 +27,7 @@ const MyPageScreen = ({ navigation }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!listFetched) {
+        if (!list) {
             setListFetched(false);
             dispatch(actions.getList());
         }
@@ -48,18 +48,17 @@ const MyPageScreen = ({ navigation }) => {
             itemList = createItemList(listArray);
             console.log('List:', list, 'ListArray:', listArray)
         }
-    }, [list, listFetched]);
+    }, [list]);
 
-    useEffect(() => {
+ /*    useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setListFetched(false);
             //setListArray(null);
         });
         return unsubscribe;
-    }, [navigation]);
+    }, [navigation]); */
 
-    const createItemList = (list) => list.map((item) => {
-        return (
+    const createItemList = (listItems) => listItems.map((item) => (
             <View key={item.id} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <ConfirmModal visible={modalVisible} navigation={navigation} />
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -71,7 +70,7 @@ const MyPageScreen = ({ navigation }) => {
                 </SmallButton>
             </View>
         )
-    });
+    );
 
     return (
         <View style={styles.screen}>
