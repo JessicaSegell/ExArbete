@@ -1,5 +1,5 @@
-import React, { useSate, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import { SmallButton } from '../../Components/Styled/UI';
 import { SmallText, HeaderText, SubHeaderText } from '../../Components/Styled/Text';
 import { Colors } from '../../../constants/Colors';
@@ -7,7 +7,6 @@ import { Colors } from '../../../constants/Colors';
 const AuthStartScreen = ({ navigation }) => {
     return (
         <View style={styles.screen}>
-            <Text>Hello auth start!</Text>
             <View style={styles.top}>
                 <HeaderText>Välkommen!</HeaderText>
                 <SubHeaderText>Logga in för att starta</SubHeaderText>

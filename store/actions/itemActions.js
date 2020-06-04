@@ -1,6 +1,5 @@
 import * as actionTypes from './actionTypes';
-import { firestore, fieldPath } from '../../src/config';
-import collectionNames from '../../firestore/collectionNames';
+import { firestore } from '../../src/config';
 
 const connectCategoryItemsStart = () => (
     {
@@ -33,31 +32,4 @@ export const getCategoryItems = (catKey) => ((dispatch) => {
         .catch((err) => {
             console.log('Something went wrong', err)
         })
-}
-)
-
-    // .where(fieldPath.documentId(), 'in', itemIds)
-/* export const fetchQuestionsByIds = (questionIds) => (dispatch) => {
-    dispatch(connectQuestionsStart());
-    console.log('question keys', questionIds);
-    firestore.collection(collectionsNames.QUESTIONS)
-        .where(fieldPath.documentId(), 'in', questionIds)
-        .get()
-        .then((questions) => {
-            dispatch(fetchQuestionsByIdsSuccess(questions));
-        })
-        .catch((err) => {
-            dispatch(fetchQuestionsByIdsError(err));
-        });
-}; */
-
-
-/* export const getCategories = () => (
-    (dispatch) => {
-        firestore.collection('categories').orderBy('name').get()
-            .then((querySnapshot) => {
-                dispatch(connectCategoriesStart());
-                dispatch(getCategoriesSuccess(querySnapshot));
-                //console.log(querySnapshot);
-            });
-    }); */
+});

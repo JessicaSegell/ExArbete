@@ -8,10 +8,6 @@ export {
     cleanUpItems
 } from './itemActions';
 
-export {
-    signUpNewUser,
-} from './formActions';
-
   export {
     signIn,
     signOut,

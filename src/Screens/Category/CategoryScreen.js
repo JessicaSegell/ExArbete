@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Button, Image } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 import * as actions from '../../../store/actions/index';
 import { HeaderText, SubHeaderText } from '../../Components/Styled/Text';
@@ -38,7 +38,6 @@ const CategoryScreen = ({ navigation }) => {
 
     const createCategoryMenu = (cats) => cats.map((category) => (
         <View style={styles.menuItem} key={category.id} >
-            {console.log(category.name, category.url)}
             <SubHeaderText>{category.name}</SubHeaderText>
             <MenuItem
                 width="90%"
@@ -91,6 +90,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
-})
+});
 
 export default CategoryScreen;

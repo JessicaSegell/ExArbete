@@ -11,12 +11,9 @@ const SignInScreen = () => {
     const [userPassword, setUserPassword] = useState('');
     const [newUser, setNewUser] = useState({ email: '', password: '' });
 
-
     const loggedIn = useSelector((state) => state.auth.loggedIn);
     const error = useSelector((state) => state.auth.error);
     const dispatch = useDispatch();
-    //console.log(loggedIn, userPassword, userEmail)
-    console.log(error);
 
     const handleInput = () => {
         setNewUser({ email: userEmail, password: userPassword })
@@ -26,11 +23,6 @@ const SignInScreen = () => {
     const handleFormValidation = () => {
         dispatch(actions.signIn(newUser));
         console.log(loggedIn, userPassword, userEmail, newUser)
-    };
-
-    const handleSignOut = () => {
-        dispatch(actions.signOut());
-        console.log('handle sign out ran', loggedIn);
     };
 
     return (
@@ -89,6 +81,6 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 20,
     },
-})
+});
 
 export default SignInScreen;

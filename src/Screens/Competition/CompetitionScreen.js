@@ -6,11 +6,11 @@ import { Colors } from '../../../constants/Colors';
 import { NumKey, ZeroNumKey, EnterKey } from '../../Components/Styled/NumKey';
 import { SmallText, SubHeaderText, AltItemText } from '../../Components/Styled/Text';
 import GameModal from '../../Modals/GameModal';
+import ConfirmSaveModal from '../../Modals/ConfirmSaveModal';
+import { firebaseAuth } from '../../config';
 
 let gameBox = null;
 let score = 0;
-let wrongAnswers = [];
-let correctAnswers = [];
 let newData = [];
 let listSuggestion = null;
 
@@ -23,14 +23,13 @@ const CompetitionScreen = ({ navigation, route }) => {
     const [itemArray, setItemArray] = useState([]);
     const [itemPLU, setItemPLU] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
-    //const [wrongAnswers, setWrongAnswers] = useState([]);
+    const [confirmVisible, setConfirmVisible] = useState(false);
     const [wrong, setWrong] = useState(null);
-    const [listCreated, setListCreated] = useState(false);
     const wrongA = useRef(null);
 
     const items = useSelector((state) => state.items.items);
-   // const user = useSelector((state) => state.user.user);
     const dispatch = useDispatch();
+    let user = firebaseAuth.currentUser;
 
     useEffect(() => {
         if (!itemsFetched) {
@@ -102,7 +101,7 @@ const CompetitionScreen = ({ navigation, route }) => {
 
     const onChangeHandler = (text) => {
         setValue(text);
-    }
+    };
 
     const createListSuggestion = (item) => {
         if (newData.length != 0) {
@@ -120,20 +119,19 @@ const CompetitionScreen = ({ navigation, route }) => {
     };
 
     const saveList = () => {
+        let id = user.uid;
+        dispatch(actions.createList(newData, id));
+        setConfirmVisible(true);
         console.log('list was saved!');
-        dispatch(actions.createList(newData));
     };
 
     const onSubmitHandler = () => {
-
         if (value == itemPLU) {
             score += 1;
             let y = {};
             y = itemArray.shift();
             setItemArray(itemArray);
-            // correctAnswers = [correctAnswers, { ...y }]
             console.log('correct! ', score, itemArray.length);
-            // console.log('rätt:', correctAnswers);
             setValue('');
             toggleNextItem();
         } else {
@@ -149,7 +147,6 @@ const CompetitionScreen = ({ navigation, route }) => {
         };
     };
 
-
     return (
         <View style={styles.screen}>
             <GameModal
@@ -158,6 +155,10 @@ const CompetitionScreen = ({ navigation, route }) => {
                 score={score}
                 listSuggestion={listSuggestion}
                 save={saveList}
+            />
+            <ConfirmSaveModal
+                visible={confirmVisible}
+                closeModal={() => setConfirmVisible(false)}
             />
             <View style={styles.top}>
                 {gameStarted
@@ -246,6 +247,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderWidth: 2,
         borderColor: 'grey',
+        paddingLeft: 10,
+        fontSize: 20,
     },
     numPadContainer: {
         flexDirection: 'row',

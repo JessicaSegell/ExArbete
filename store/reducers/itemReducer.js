@@ -1,12 +1,10 @@
-
 import * as actionTypes from '../actions/actionTypes';
-
 
 const initState = {
     items: null,
     loading: false,
     error: null,
-}
+};
 
 const connectCategoryItemsStart = (state) => (
     {
@@ -22,7 +20,7 @@ const cleanUpItems = (state) => (
         loading: false,
         error: null,
     }
-)
+);
 
 const getCategoryItemsSuccess = (state, action) => {
     console.log('item reducer');
@@ -44,27 +42,6 @@ const getCategoryItemsSuccess = (state, action) => {
         items: itms,
     };
 };
-
-/* const fetchQuestionsByIdsSuccess = (state, action) => {
-    const questionArray = [];
-    action.trackQuestions.forEach((q) => {
-        questionArray.push({
-            id: q.id,
-            categoryKey: q.data().categoryKey,
-            imgUrl: q.data().imgUrl,
-            correctAnswer: q.data().correctAnswer,
-            text: q.data().text,
-            title: q.data().title,
-            options: q.data().options,
-        });
-    });
-    return {
-        ...state,
-        loading: false,
-        error: null,
-        trackQuestions: questionArray,
-    };
-}; */
 
 const itemReducer = (state = initState, action) => {
     switch (action.type) {
